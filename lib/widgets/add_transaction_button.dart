@@ -1,18 +1,18 @@
+// lib/widgets/add_transaction_button.dart  
 import 'package:flutter/material.dart';  
-import '../screens/add_expense_screen.dart';  
+import 'package:provider/provider.dart';  
+import '../providers/transaction_provider.dart';  
 
 class AddTransactionButton extends StatelessWidget {  
   @override  
   Widget build(BuildContext context) {  
-    return FloatingActionButton(  
+    return ElevatedButton(  
       onPressed: () {  
-        Navigator.push(  
-          context,  
-          MaterialPageRoute(builder: (context) => AddExpenseScreen()),  
-        );  
+        // Here you can implement the logic to show a dialog or a new screen to add a transaction  
+        // For simplicity, we will add a sample transaction directly  
+        Provider.of<TransactionProvider>(context, listen: false).addTransaction('New Transaction', 100.0, 'Today');  
       },  
-      child: Icon(Icons.add),  
-      backgroundColor: Colors.pink,  
+      child: Text('Add Transaction'),  
     );  
   }  
 }

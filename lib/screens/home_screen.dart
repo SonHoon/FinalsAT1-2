@@ -1,4 +1,7 @@
+// lib/screens/home_screen.dart  
 import 'package:flutter/material.dart';  
+import 'package:provider/provider.dart';  
+import '../providers/transaction_provider.dart'; // Import the provider  
 import '../widgets/balance_card.dart';  
 import '../widgets/transaction_card.dart';  
 import '../widgets/add_transaction_button.dart';  
@@ -39,6 +42,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override  
   Widget build(BuildContext context) {  
+    final transactionProvider = Provider.of<TransactionProvider>(context); // Access the provider  
+
     return MaterialApp(  
       theme: _isDarkMode ? ThemeData.dark() : ThemeData.light(), // Apply theme  
       home: Scaffold(  
@@ -73,25 +78,19 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),  
               ),  
               Expanded(  
-                child: ListView(  
-                  children: [  
-                    GestureDetector(  
-                      onTap: () => _onTransactionTap('Food'),  
-                      child: TransactionCard(title: 'Food', amount: -45.00, date: 'Today'),  
-                    ),  
-                    GestureDetector(  
-                      onTap: () => _onTransactionTap('Shopping'),  
-                      child: TransactionCard(title: 'Shopping', amount: -280.00, date: 'Today'),  
-                    ),  
-                    GestureDetector(  
-                      onTap: () => _onTransactionTap('Entertainment'),  
-                      child: TransactionCard(title: 'Entertainment', amount: -60.00, date: 'Yesterday'),  
-                    ),  
-                    GestureDetector(  
-                      onTap: () => _onTransactionTap('Travel'),  
-                      child: TransactionCard(title: 'Travel', amount: -250.00, date: 'Yesterday'),  
-                    ),  
-                  ],  
+                child: ListView.builder(  
+                  itemCount: transactionProvider.transactions.length,  
+                  itemBuilder: (context, index) {  
+                    final transaction = transactionProvider.transactions[index];  
+                    return GestureDetector(  
+                      onTap: () => _onTransactionTap(transaction.title),  
+                      child: TransactionCard(  
+                        title: transaction.title,  
+                        amount: transaction.amount,  
+                        date: transaction.date,  
+                      ),  
+                    );  
+                  },  
                 ),  
               ),  
               SizedBox(height: 20),  
